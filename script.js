@@ -7,6 +7,7 @@ const firebaseConfig = {
     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
     appId: "YOUR_APP_ID"
 };
+
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
@@ -15,7 +16,6 @@ const registerForm = document.getElementById("registerForm");
 if (registerForm) {
     registerForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
@@ -34,7 +34,6 @@ const loginForm = document.getElementById("loginForm");
 if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
 
@@ -52,7 +51,7 @@ if (loginForm) {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         console.log("User is logged in", user);
-        // Redirect to the dashboard or home page if logged in
+        // Show the dashboard or user-specific content
     } else {
         console.log("No user is logged in");
         // Redirect to the login page if not logged in
@@ -62,3 +61,18 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+// Logout functionality
+const logoutLink = document.getElementById("logoutLink");
+if (logoutLink) {
+    logoutLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        firebase.auth().signOut()
+            .then(() => {
+                alert("You have logged out successfully!");
+                window.location.href = "login.html";  // Redirect to the login page after logging out
+            })
+            .catch((error) => {
+                alert("Error logging out: " + error.message);
+            });
+    });
+}
