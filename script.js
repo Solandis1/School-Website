@@ -1,8 +1,8 @@
-// Import Firebase functions (ONLY if using a module system)
-// import { initializeApp } from "firebase/app";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// Import Firebase SDK (Only needed if using Firebase modules)
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-// Firebase configuration
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAaPInHNEm4CE9CuVZMlnCGnbCDXe_tEho",
   authDomain: "solandis-school.firebaseapp.com",
@@ -13,20 +13,23 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 // Login Function
 function login() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    auth.signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         alert("Logged in successfully as " + userCredential.user.email);
-        window.location.href = "dashboard.html"; // Redirect to dashboard
+        window.location.href = "dashboard.html"; // Redirect after login
     })
     .catch((error) => {
         alert(error.message);
     });
 }
+
+// Make function global so HTML can access it
+window.login = login;
